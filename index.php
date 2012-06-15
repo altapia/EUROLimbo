@@ -156,15 +156,37 @@ body {
 					
 					$date = date_create($row["fecha"]);
 					echo '<tr>';
+					$ico="eurologo.png";
+					if(strtolower($row["usuario"])=="zato"){
+						$ico="barbol.png";
+					}else if(strtolower($row["usuario"])=="tapia"){
+						$ico="bear.png";
+					}else if(strtolower($row["usuario"])=="nano"){
+						$ico="gnomo.png";
+					}else if(strtolower($row["usuario"])=="jorge"){
+						$ico="schooles.png";
+					}else if(strtolower($row["usuario"])=="matute"){
+						$ico="doctor.png";
+					}else if(strtolower($row["usuario"])=="lucho"){
+						$ico="ligh.png";
+					}else if(strtolower($row["usuario"])=="borja"){
+						$ico="moro.png";
+					}else if(strtolower($row["usuario"])=="raúl"){
+						$ico="trompetilla.png";
+					}else if(strtolower($row["usuario"])=="eurolimbo"){
+						$ico="eurologo.png";
+					}
+
+
 					if($row["usuario"]=="EUROLimbo"){
 						echo '<td style="text-align:left">
 						<div class="alert alert-info" style="padding: 0px 0px 0px 0px;margin-bottom: 0px;">
                                                         <span class="label label-warning">['.date_format($date, 'd/m/Y H:i').']</span>
-                                                       <strong> '.$row["usuario"].':</strong> '.$row["mensaje"].' </div></td>';
+                                                       <img src="./images/'.$ico.'"  height="20"/><strong> '.$row["usuario"].':</strong> '.$row["mensaje"].' </div></td>';
 					}else{
 						echo '<td style="text-align:left">
 							<span class="label label-info">['.date_format($date, 'd/m/Y H:i').']</span>
-							<strong> '.$row["usuario"].':</strong> '.$row["mensaje"].' </td>';
+							 <img src="./images/'.$ico.'" height="20"/><strong> '.$row["usuario"].':</strong> '.$row["mensaje"].' </td>';
 					}
 					//echo '<td>'.$row["usuario"].'</td>';
 					//echo '<td>'.$row["mensaje"].'</td>';
