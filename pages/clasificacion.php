@@ -61,6 +61,7 @@
 
 <? 
 include "../pages/conexion_bd.php";
+include_once "../pages/iconos_usuarios.php";
 
 ?>
 <!-- GRUPO A-->
@@ -104,7 +105,7 @@ order by puntuacion desc, gananc desc) puntuacio, (SELECT @rownum:=0) r;");
 							$date = date_create($row["fecha"]);
 							echo '<tr>';
 							echo '<td style="text-align:center">'.$row["pos"].'</td>';
-							echo '<td style="text-align:center">'.$row["apostante"].'</td>';
+							echo '<td style="text-align:center"> <img src="../images/'.get_ico_usuario($row["apostante"]).'" height="20"/> '.$row["apostante"].'</td>';
 							echo '<td style="text-align:center">'.$row["numapuestas"].'</td>';
 							echo '<td style="text-align:center">'.$row["puntuacion"].'</td>';
 							echo '<td style="text-align:center">'.$row["gananc"].'&euro;</td>';

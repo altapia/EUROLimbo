@@ -32,7 +32,10 @@ body {
   })();
 
 </script>
+<script
+	src="botoneraIconos.js"></script>
     <script>
+
 				$(document).ready(function(){  	  									
 					$("#formChat2").submit(function() { 		 		 		 		 		 		
 						if($("#nombre2").val()!='' && $("#mensaje2").val()!='' && $("#nombre2").val()!='EUROLimbo'){		
@@ -149,6 +152,7 @@ body {
             	<td style="display: block;display: table-cell;">
                 <div style="height:200px;overflow: auto;width:100%;">
             <?
+				include "./pages/iconos_usuarios.php";
 				echo '<table class="table-striped" style="width:100%;">';
 				
 				while ($row=mysql_fetch_array($result))
@@ -156,37 +160,16 @@ body {
 					
 					$date = date_create($row["fecha"]);
 					echo '<tr>';
-					$ico="eurologo.png";
-					if(strtolower($row["usuario"])=="zato"){
-						$ico="barbol.png";
-					}else if(strtolower($row["usuario"])=="tapia"){
-						$ico="bear.png";
-					}else if(strtolower($row["usuario"])=="nano"){
-						$ico="gnomo.png";
-					}else if(strtolower($row["usuario"])=="jorge"){
-						$ico="schooles.png";
-					}else if(strtolower($row["usuario"])=="matute"){
-						$ico="doctor.png";
-					}else if(strtolower($row["usuario"])=="lucho"){
-						$ico="ligh.png";
-					}else if(strtolower($row["usuario"])=="borja"){
-						$ico="moro.png";
-					}else if(strtolower($row["usuario"])=="raúl"){
-						$ico="trompetilla.png";
-					}else if(strtolower($row["usuario"])=="eurolimbo"){
-						$ico="eurologo.png";
-					}
-
-
+					
 					if($row["usuario"]=="EUROLimbo"){
 						echo '<td style="text-align:left">
 						<div class="alert alert-info" style="padding: 0px 0px 0px 0px;margin-bottom: 0px;">
                                                         <span class="label label-warning">['.date_format($date, 'd/m/Y H:i').']</span>
-                                                       <img src="./images/'.$ico.'"  height="20"/><strong> '.$row["usuario"].':</strong> '.$row["mensaje"].' </div></td>';
+                                                       <img src="./images/'.get_ico_usuario($row["usuario"]).'"  height="20"/><strong> '.$row["usuario"].':</strong> '.$row["mensaje"].' </div></td>';
 					}else{
 						echo '<td style="text-align:left">
 							<span class="label label-info">['.date_format($date, 'd/m/Y H:i').']</span>
-							 <img src="./images/'.$ico.'" height="20"/><strong> '.$row["usuario"].':</strong> '.$row["mensaje"].' </td>';
+							 <img src="./images/'.get_ico_usuario($row["usuario"]).'" height="20"/><strong> '.$row["usuario"].':</strong> '.$row["mensaje"].' </td>';
 					}
 					//echo '<td>'.$row["usuario"].'</td>';
 					//echo '<td>'.$row["mensaje"].'</td>';
@@ -207,7 +190,14 @@ body {
             ?>
             </div>
             <div style="display: block;">
-            <form action="" method="post" class="well form-horizontal" id="formChat2">            
+
+            <form action="" method="post" class="well form-horizontal" id="formChat2">   
+	<script type="text/javascript">
+		insertaBotonera();
+		
+	</script>
+		<br>
+		    
              <fieldset id="filesetusuario" style="display:inline;margin-bottom: 0px;"> 
 				<input type="text" class="input-small" placeholder="Nombre" id="nombre2" name="usuario">
 			</fieldset>   
