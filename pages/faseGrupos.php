@@ -56,7 +56,7 @@
 			<div class="span10">
 				<div class="container">
 					<h1>Fase de grupos</h1>
-					<p>Una nueva manera de vivir la Eurocopa.</p>
+					<p>Apuestas de <strong>6€</strong> por partido.</p>
 					
 <?
 include "../pages/conexion_bd.php";

@@ -14,7 +14,7 @@
 	</style>
 	<link href="../bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
 </head>
-<body>
+<body> 
 <?php include_once("analyticstracking.php") ?>
 	<div class="navbar navbar-fixed-top">
 		<div class="navbar-inner">
@@ -56,7 +56,7 @@
 			<div class="span10">
 				<div class="container">
 					<h1>Cuartos de Final</h1>
-					<p>Una nueva manera de vivir la Eurocopa.</p>
+					<p>Apuestas de <strong>20€</strong> por partido.</p>
 <?
 include "../pages/conexion_bd.php";
 ?>

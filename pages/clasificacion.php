@@ -41,83 +41,252 @@
 	</div>
 
 
-<!--
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<div class="span2">
-				<ul class="nav nav-list">
-					<li class="nav-header">Fase de Grupos</li>
-					<li><a href="#"> <i class="icon-book"></i> Grupo A</a></li>
-					<li><a href="#"> <i class="icon-book"></i> Grupo B</a></li>
-					<li><a href="#"> <i class="icon-book"></i> Grupo C</a></li>
-					<li><a href="#"> <i class="icon-book"></i> Grupo D</a></li>
-				</ul>
-			</div> 
--->
+<? 
+include "../pages/conexion_bd.php";
+include_once "../pages/iconos_usuarios.php";
+?>
 			<div class="span10">
 				<div class="container">
 					<h1>Clasificación de apostantes</h1>
+                    
+<h3>Final</h3>
 
-
-<? 
-include "../pages/conexion_bd.php";
-
+<?
+	//Clasificación fase de grupos
+	$result=mysql_query("Select *, @rownum:=@rownum+1 AS pos from (
+	select APOSTANTE as apostante, sum(GANANCIA) as gananc, sum(if(APUESTA=RESULTADO,1,0)) as puntuacion,count(*) as numapuestas
+	from partidos 
+	where APOSTANTE is not null and APOSTANTE <>''
+	and RESULTADO is not null AND RESULTADO <>''
+	and APUESTA is not null AND APUESTA <> ''
+	and FASE = 'FINAL'
+	group by APOSTANTE
+	order by puntuacion desc, gananc desc) puntuacio, (SELECT @rownum:=0) r;");			
 ?>
-<!-- GRUPO A-->
-					<?
-                    //Ejecutamos la sentencia SQL
-//$result=mysql_query("select @rownum:=@rownum+1 AS pos, APOSTANTE as apostante, sum(GANANCIA) as gananc, sum(if(APUESTA=RESULTADO,1,0)) as puntuacion 
-//										from partidos , (SELECT @rownum:=0) r 
-//										where APOSTANTE is not null and APOSTANTE <>''
-//											and RESULTADO is not null AND RESULTADO <>''
-//											and APUESTA is not null AND APUESTA <> ''
-//										group by APOSTANTE 
-//										order by puntuacion desc, gananc desc;");
-$result=mysql_query("Select *, @rownum:=@rownum+1 AS pos from (
-select APOSTANTE as apostante, sum(GANANCIA) as gananc, sum(if(APUESTA=RESULTADO,1,0)) as puntuacion,count(*) as numapuestas
-from partidos 
-where APOSTANTE is not null and APOSTANTE <>''
-and RESULTADO is not null AND RESULTADO <>''
-and APUESTA is not null AND APUESTA <> ''
-group by APOSTANTE
-order by puntuacion desc, gananc desc) puntuacio, (SELECT @rownum:=0) r;");
 
-					
-                    ?>
-					<table class="table table-bordered">
-						<thead>
-							<tr>
-								<th style="text-align:center">Pos.</th>
-  				                                <th style="text-align:center">Apostante</th>
-								<th style="text-align:center">N&deg; de Apuestas</th>
-								<th style="text-align:center">Puntuación</th>
-                                				<th style="text-align:center">Euros</th>
-							</tr>
-						</thead>
-						<tbody>
-					  <? 
+<table class="table table-bordered">
+<thead>
+    <tr>
+        <th style="text-align:center">Pos.</th>
+   		<th style="text-align:center">Apostante</th>
+        <th style="text-align:center">N&deg; de Apuestas</th>
+        <th style="text-align:center">Puntuación</th>
+  		<th style="text-align:center">Euros</th>
+    </tr>
+</thead>
+<tbody>
+<? 
+$tot_gan=0;
+  while ($row=mysql_fetch_array($result))
+	{
+	$tot_gan=$tot_gan+$row["gananc"];
+	$date = date_create($row["fecha"]);
+	echo '<tr>';
+	echo '<td style="text-align:center">'.$row["pos"];
+	switch($row["pos"]){
+		case 1:
+			echo ' <span class="label label-success">Final</span>';
+			break;
+	}
+	echo '</td>';
+	echo '<td style="text-align:center"> <img src="../images/'.get_ico_usuario($row["apostante"]).'" height="20"/> '.$row["apostante"].'</td>';
+	echo '<td style="text-align:center">'.$row["numapuestas"].'</td>';
+	echo '<td style="text-align:center">'.$row["puntuacion"].'</td>';
+	echo '<td style="text-align:center">'.$row["gananc"].'&euro;</td>';
+	echo '</tr>	';
+	}
+	mysql_free_result($result);
+	 echo '<tr>';
+	echo '<td colspan="4" style="text-align:center"><strong>Ganancia Total</strong></td>';
+	echo '<td style="text-align:center"><strong>'.$tot_gan.'&euro;</strong></td>';
+	echo '</tr>     ';
+?>
+  </tbody>
+</table>                      
+                    
+<h3>Semifinal</h3>
 
-						$tot_gan=0;
-						  while ($row=mysql_fetch_array($result))
-							{
-							$tot_gan=$tot_gan+$row["gananc"];
-							$date = date_create($row["fecha"]);
-							echo '<tr>';
-							echo '<td style="text-align:center">'.$row["pos"].'</td>';
-							echo '<td style="text-align:center">'.$row["apostante"].'</td>';
-							echo '<td style="text-align:center">'.$row["numapuestas"].'</td>';
-							echo '<td style="text-align:center">'.$row["puntuacion"].'</td>';
-							echo '<td style="text-align:center">'.$row["gananc"].'&euro;</td>';
-							echo '</tr>	';
-							}
-							mysql_free_result($result);
-							 echo '<tr>';
-							echo '<td colspan="4" style="text-align:center"><strong>Ganancia Total</strong></td>';
-							echo '<td style="text-align:center"><strong>'.$tot_gan.'&euro;</strong></td>';
-							echo '</tr>     ';
-                        ?>
-					  </tbody>
-				  </table>
+<?
+	//Clasificación fase de grupos
+	$result=mysql_query("Select *, @rownum:=@rownum+1 AS pos from (
+	select APOSTANTE as apostante, sum(GANANCIA) as gananc, sum(if(APUESTA=RESULTADO,1,0)) as puntuacion,count(*) as numapuestas
+	from partidos 
+	where APOSTANTE is not null and APOSTANTE <>''
+	and RESULTADO is not null AND RESULTADO <>''
+	and APUESTA is not null AND APUESTA <> ''
+	and FASE = 'SEMI'
+	group by APOSTANTE
+	order by puntuacion desc, gananc desc) puntuacio, (SELECT @rownum:=0) r;");			
+?>
+
+<table class="table table-bordered">
+<thead>
+    <tr>
+        <th style="text-align:center">Pos.</th>
+   		<th style="text-align:center">Apostante</th>
+        <th style="text-align:center">N&deg; de Apuestas</th>
+        <th style="text-align:center">Puntuación</th>
+  		<th style="text-align:center">Euros</th>
+    </tr>
+</thead>
+<tbody>
+<? 
+$tot_gan=0;
+  while ($row=mysql_fetch_array($result))
+	{
+	$tot_gan=$tot_gan+$row["gananc"];
+	$date = date_create($row["fecha"]);
+	echo '<tr>';
+	echo '<td style="text-align:center">'.$row["pos"];
+	switch($row["pos"]){
+		case 1:
+			echo ' <span class="label label-success">Final</span>';
+			break;
+		default:
+			echo ' <span class="label label-warning">Semifinal</span>';
+			break;
+	}
+	echo '</td>';
+	echo '<td style="text-align:center"> <img src="../images/'.get_ico_usuario($row["apostante"]).'" height="20"/> '.$row["apostante"].'</td>';
+	echo '<td style="text-align:center">'.$row["numapuestas"].'</td>';
+	echo '<td style="text-align:center">'.$row["puntuacion"].'</td>';
+	echo '<td style="text-align:center">'.$row["gananc"].'&euro;</td>';
+	echo '</tr>	';
+	}
+	mysql_free_result($result);
+	 echo '<tr>';
+	echo '<td colspan="4" style="text-align:center"><strong>Ganancia Total</strong></td>';
+	echo '<td style="text-align:center"><strong>'.$tot_gan.'&euro;</strong></td>';
+	echo '</tr>     ';
+?>
+  </tbody>
+</table>                    
+                    
+                    
+<!-- Cuartos de final-->
+<h3>Cuartos de final</h3>
+
+<?
+	//Clasificación fase de grupos
+	$result=mysql_query("Select *, @rownum:=@rownum+1 AS pos from (
+	select APOSTANTE as apostante, sum(GANANCIA) as gananc, sum(if(APUESTA=RESULTADO,1,0)) as puntuacion,count(*) as numapuestas
+	from partidos 
+	where APOSTANTE is not null and APOSTANTE <>''
+	and RESULTADO is not null AND RESULTADO <>''
+	and APUESTA is not null AND APUESTA <> ''
+	and FASE = 'CUARTOS'
+	group by APOSTANTE
+	order by puntuacion desc, gananc desc) puntuacio, (SELECT @rownum:=0) r;");			
+?>
+
+<table class="table table-bordered">
+<thead>
+    <tr>
+        <th style="text-align:center">Pos.</th>
+   		<th style="text-align:center">Apostante</th>
+        <th style="text-align:center">N&deg; de Apuestas</th>
+        <th style="text-align:center">Puntuación</th>
+  		<th style="text-align:center">Euros</th>
+    </tr>
+</thead>
+<tbody>
+<? 
+$tot_gan=0;
+  while ($row=mysql_fetch_array($result))
+	{
+	$tot_gan=$tot_gan+$row["gananc"];
+	$date = date_create($row["fecha"]);
+	echo '<tr>';
+	echo '<td style="text-align:center">'.$row["pos"];
+	switch($row["pos"]){
+		case 1:
+		case 2:
+			echo ' <span class="label label-warning">Semifinal</span>';
+			break;
+		default:
+			echo ' <span class="label label-important">Cuartos</span>';
+			break;
+	}
+	echo '</td>';
+	echo '<td style="text-align:center"> <img src="../images/'.get_ico_usuario($row["apostante"]).'" height="20"/> '.$row["apostante"].'</td>';
+	echo '<td style="text-align:center">'.$row["numapuestas"].'</td>';
+	echo '<td style="text-align:center">'.$row["puntuacion"].'</td>';
+	echo '<td style="text-align:center">'.$row["gananc"].'&euro;</td>';
+	echo '</tr>	';
+	}
+	mysql_free_result($result);
+	 echo '<tr>';
+	echo '<td colspan="4" style="text-align:center"><strong>Ganancia Total</strong></td>';
+	echo '<td style="text-align:center"><strong>'.$tot_gan.'&euro;</strong></td>';
+	echo '</tr>     ';
+?>
+  </tbody>
+</table>
+          
+
+
+<!-- FASE DE GRUPOS-->
+<h3>Fase de grupos</h3>
+
+<?
+	//Clasificación fase de grupos
+	$result=mysql_query("Select *, @rownum:=@rownum+1 AS pos from (
+	select APOSTANTE as apostante, sum(GANANCIA) as gananc, sum(if(APUESTA=RESULTADO,1,0)) as puntuacion,count(*) as numapuestas
+	from partidos 
+	where APOSTANTE is not null and APOSTANTE <>''
+	and RESULTADO is not null AND RESULTADO <>''
+	and APUESTA is not null AND APUESTA <> ''
+	and FASE like 'GRUPO%'
+	group by APOSTANTE
+	order by puntuacion desc, gananc desc) puntuacio, (SELECT @rownum:=0) r;");			
+?>
+
+<table class="table table-bordered">
+<thead>
+    <tr>
+        <th style="text-align:center">Pos.</th>
+   		<th style="text-align:center">Apostante</th>
+        <th style="text-align:center">N&deg; de Apuestas</th>
+        <th style="text-align:center">Puntuación</th>
+  		<th style="text-align:center">Euros</th>
+    </tr>
+</thead>
+<tbody>
+<? 
+$tot_gan=0;
+  while ($row=mysql_fetch_array($result))
+	{
+	$tot_gan=$tot_gan+$row["gananc"];
+	$date = date_create($row["fecha"]);
+	echo '<tr>';
+	echo '<td style="text-align:center">'.$row["pos"];
+	switch($row["pos"]){
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+			echo ' <span class="label label-important">Cuartos</span>';
+			break;
+		default:
+			echo ' <span class="label">Grupos</span>';
+	}
+	echo '</td>';
+	echo '<td style="text-align:center"> <img src="../images/'.get_ico_usuario($row["apostante"]).'" height="20"/> '.$row["apostante"].'</td>';
+	echo '<td style="text-align:center">'.$row["numapuestas"].'</td>';
+	echo '<td style="text-align:center">'.$row["puntuacion"].'</td>';
+	echo '<td style="text-align:center">'.$row["gananc"].'&euro;</td>';
+	echo '</tr>	';
+	}
+	mysql_free_result($result);
+	 echo '<tr>';
+	echo '<td colspan="4" style="text-align:center"><strong>Ganancia Total</strong></td>';
+	echo '<td style="text-align:center"><strong>'.$tot_gan.'&euro;</strong></td>';
+	echo '</tr>     ';
+?>
+  </tbody>
+</table>
+                  
+                 
                   
 </div>
 				<!--container -->

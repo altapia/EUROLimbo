@@ -56,6 +56,7 @@
 			<div class="span10">
 				<div class="container">
 					<h1>Final</h1>
+					<p>Apuesta de <strong>395,45€</strong>.</p>
 
 
 <? 
