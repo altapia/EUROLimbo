@@ -1,3 +1,4 @@
+//Función que inserta la botonera
 function insertaBotonera(){
 	document.write("<p><a class='btn-mini btn-info' data-toggle='collapse' data-target='#divbotones' href='#'><i class='icon-user icon-white'></i> Iconos</a></p>");
 	document.write("<div class='collapse' id='divbotones'>");
